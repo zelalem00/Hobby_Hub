@@ -1,0 +1,34 @@
+@model Hobby
+<partial name="_navbar"/>
+<h1>Description: @Model.Description</h1>
+
+<h4>@Model.Title Entusiasts:</h4>
+@{
+      foreach(Eventss a in Model.Guests)
+      {  
+        <h4>@a.Creator.FirstName</h4>
+      }
+      }
+      
+    @{
+      if(ViewBag.LoggedIn.UserId == Model.UserId)
+      {
+          <td><a href="/delete/@Model.HobbyId">Delete</a> | <a href="/edit/@Model.HobbyId">Edit</a></td>
+      }
+      else {
+              bool isAttending = false;
+              foreach(Eventss f in Model.Guests)
+              {
+                if(ViewBag.LoggedIn.UserId == f.UserId)
+                {
+                  isAttending = true;
+                }
+              }
+              if(isAttending == true)
+              {
+                <td><a href="/unjoin/@Model.HobbyId">Unjoin</a></td>
+              } else {
+                <td><a href="/join/@Model.HobbyId">Join</a></td>
+              }
+      }
+    }

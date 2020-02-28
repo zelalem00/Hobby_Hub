@@ -1,0 +1,45 @@
+@model List<Hobby>
+<partial name="_navbar"/>
+<h1>Hobbies</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Entusiasits</th>
+    </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach(Hobby h in Model)
+            {
+            <tr>
+            <td><a href="/detail/@h.HobbyId">@h.Title</a></td>
+            <td>@h.Guests.Count</td>
+            @{
+            if(ViewBag.LoggedIn.UserId == h.UserId)
+            {
+              <td><a href="delete/@h.HobbyId">Delete</a> | <a href="/edit/@h.HobbyId">Edit</a></td>
+            } else {
+              bool isAttending = false;
+              foreach(Eventss e in h.Guests)
+              {
+                if(ViewBag.LoggedIn.UserId == e.UserId)
+                {
+                  isAttending = true;
+                }
+              }
+              if(isAttending == true)
+              {
+                <td><a href="unjoin/@h.HobbyId">Unjoin</a></td>
+              } else {
+                <td><a href="join/@h.HobbyId">Join</a></td>
+              }
+            }
+          }
+            </tr>
+            }
+        }
+        
+    </tbody>
+</table>
+<a href="/Hobby">Create New Hobby</a>
